@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            color: #333;
+            min-height: 100vh;
+        }
+        .container {
+            padding: 30px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            margin: 50px auto;
+            max-width: 1200px;
+        }
+        h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: #ff6b6b;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .navbar h1 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin: 0;
+        }
+        .btn-logout {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .btn-logout:hover {
+            background: #555;
+        }
+        h3 {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .table-container {
+            margin-top: 20px;
+        }
+        .table {
+            text-align: center;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .table th {
+            background-color: #ff6b6b;
+            color: #fff;
+            padding: 10px;
+        }
+        .table td {
+            background-color: #ffecec;
+            padding: 10px;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .btn {
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .btn-primary {
+            background: #57c7d4;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #45b1bf;
+        }
+        .btn-danger {
+            background: #ff6b6b;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #e63939;
+        }
+        .btn-success {
+            background: #4caf50;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #43a047;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <h1>Welcome, <%= User.firstName %></h1>
+            <form action="/logout" method="get">
+                <button class="btn btn-logout" type="submit">Logout</button>
+            </form>
+        </div>
+        <div class="text-end">
+            <a href="/create-event" class="btn btn-success mb-3">Create Event</a>
+        </div>
+        <div class="table-container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Venue</th>
+                        <th>Team Limit</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% events.forEach(event => { %>
+                        <tr>
+                            <td><%= event.title %></td>
+                            <td><%= event.date %></td>
+                            <td><%= event.time %></td>
+                            <td><%= event.venue %></td>
+                            <td><%= event.team_limit %></td>
+                            <td><%= event.description %></td>
+                            <td>
+                                <div class="actions">
+                                    <a href="/edit-event/<%= event.id %>" class="btn btn-primary btn-sm">Edit</a>
+                                    <form action="/delete-event/<%= event.id %>" method="POST" style="display: inline;">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
